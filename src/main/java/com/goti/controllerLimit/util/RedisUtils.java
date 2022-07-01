@@ -44,15 +44,16 @@ public class RedisUtils {
                     Setting setting = new Setting(config);
                     redisDS = RedisDS.create(setting, null);
                 } else {
-                    log.info("未使用 {}", config);
+                    log.info("未使用自定义配置文件");
                     redisDS = RedisDS.create();
                 }
 
             } else {
+                log.info("未使用自定义配置文件");
                 redisDS = RedisDS.create();
             }
         }
-
+        log.info("未使用自定义配置文件");
         return redisDS.getJedis();
     }
 
