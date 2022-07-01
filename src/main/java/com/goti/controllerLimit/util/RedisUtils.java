@@ -44,7 +44,7 @@ public class RedisUtils {
                     Setting setting = new Setting(config);
                     redisDS = RedisDS.create(setting, null);
                 } else {
-                    log.info("未使用自定义配置文件");
+                    log.info("未使用自定义配置文件: {}",config);
                     redisDS = RedisDS.create();
                 }
 
@@ -53,7 +53,6 @@ public class RedisUtils {
                 redisDS = RedisDS.create();
             }
         }
-        log.info("未使用自定义配置文件");
         return redisDS.getJedis();
     }
 
