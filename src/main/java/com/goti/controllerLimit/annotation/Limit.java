@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 接口访问速率限制注解
+ * 接口访问频率限制注解
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

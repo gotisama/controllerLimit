@@ -34,19 +34,18 @@ public class RedisUtils {
     public static Jedis getJedis() {
         if (redisDS == null) {
             String ymlName = SpringUtil.getActiveProfile();
-            log.info("redis config: {}", ymlName);
-
+            log.info("ActiveProfile : {}", ymlName);
             if (ObjectUtil.isNotEmpty(ymlName)) {
                 String config = StrUtil.format("classpath:config/redis-{}.setting", ymlName);
                 if (FileUtil.isFile(config)) {
                     Setting setting = new Setting(config);
+                    log.info("使用了: {}",config);
                     redisDS = RedisDS.create(setting, null);
                 } else {
+                    log.info("未使用: {}",config);
                     redisDS = RedisDS.create();
                 }
             } else {
-                String config = "config/redis.setting";
-                Setting setting = new Setting(config);
                 redisDS = RedisDS.create();
             }
         }

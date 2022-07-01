@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * @ClassName LimitInterceptor
- * @Description 接口速率限制拦截器
+ * @Description 接口频率限制拦截器
  * @Author goti
  * @Date 11:41 2022/6/30
  * @Version 1.0
