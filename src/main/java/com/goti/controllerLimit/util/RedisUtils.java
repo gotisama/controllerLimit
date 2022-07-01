@@ -1,7 +1,10 @@
 package com.goti.controllerLimit.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.NoResourceException;
+import cn.hutool.core.io.resource.Resource;
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.nosql.redis.RedisDS;
@@ -34,10 +37,8 @@ public class RedisUtils {
     public static Jedis getJedis() {
         if (redisDS == null) {
             String ymlName = SpringUtil.getActiveProfile();
-            log.info("redis config: {}", ymlName);
-
             if (ObjectUtil.isNotEmpty(ymlName)) {
-                String config = StrUtil.format("config/redis-{}.setting", ymlName);
+                String config = StrUtil.format("classpath:config/redis-{}.setting", ymlName);
                 if (FileUtil.isFile(config)) {
                     log.info("使用了 {}", config);
                     Setting setting = new Setting(config);
@@ -46,6 +47,7 @@ public class RedisUtils {
                     log.info("未使用 {}", config);
                     redisDS = RedisDS.create();
                 }
+
             } else {
                 redisDS = RedisDS.create();
             }
