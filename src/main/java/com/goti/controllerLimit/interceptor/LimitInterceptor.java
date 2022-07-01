@@ -31,7 +31,7 @@ public class LimitInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
         if (obj instanceof HandlerMethod) {
             String ipAddress = IPUtils.getClientIpAddress(request);
-            String uri=request.getRequestURI();
+            String uri = request.getRequestURI();
             HandlerMethod handlerMethod = (HandlerMethod) obj;
             Method method = handlerMethod.getMethod();
             if (!method.isAnnotationPresent(Limit.class)) {
@@ -53,12 +53,12 @@ public class LimitInterceptor implements HandlerInterceptor {
                     jsonObject.set("status", false);
                     jsonObject.set("data", "");
                     long l = RedisUtils.getLimitTime(key);
-                    if (l==0){
-                        log.info("限制访问：uri:{},ip:{}",uri, ipAddress);
+                    if (l == 0) {
+                        log.info("限制访问：uri:{},ip:{}", uri, ipAddress);
                         jsonObject.set("msg", StrUtil.format("点击过快，请重试"));
-                    }else{
-                        log.info("限制访问：uri:{},ip:{}",uri, ipAddress);
-                        jsonObject.set("msg", StrUtil.format("点击过快，请稍等{}秒后重试",l));
+                    } else {
+                        log.info("限制访问：uri:{},ip:{}", uri, ipAddress);
+                        jsonObject.set("msg", StrUtil.format("点击过快，请稍等{}秒后重试", l));
                     }
                     log.info("返回信息：{}", jsonObject.toString());
                     response.setContentType("application/json;charset=utf-8");

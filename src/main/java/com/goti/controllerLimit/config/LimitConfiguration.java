@@ -16,13 +16,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class LimitConfiguration implements WebMvcConfigurer {
 
-	/**
-	 * 添加拦截器
-	 * @param registry
-	 */
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		//添加接口速率限制拦截器，拦截所有请求
-		registry.addInterceptor(new LimitInterceptor()).addPathPatterns("/**");
-	}
+    /**
+     * 添加拦截器
+     *
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //添加接口速率限制拦截器，拦截所有请求
+        registry.addInterceptor(new LimitInterceptor()).addPathPatterns("/**");
+    }
 }
