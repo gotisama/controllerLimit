@@ -39,14 +39,14 @@ public class RedisUtils {
             if (ObjectUtil.isNotEmpty(ymlName)) {
                 String config = StrUtil.format("config/redis-{}.setting", ymlName);
                 if (FileUtil.isFile(config)) {
+                    log.info("使用了 {}", config);
                     Setting setting = new Setting(config);
                     redisDS = RedisDS.create(setting, null);
                 } else {
+                    log.info("未使用 {}", config);
                     redisDS = RedisDS.create();
                 }
             } else {
-                String config = "config/redis.setting";
-                Setting setting = new Setting(config);
                 redisDS = RedisDS.create();
             }
         }
