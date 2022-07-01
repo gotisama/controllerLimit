@@ -37,7 +37,7 @@ public class RedisUtils {
             log.info("redis config: {}", ymlName);
 
             if (ObjectUtil.isNotEmpty(ymlName)) {
-                String config = StrUtil.format("config/redis-{}.setting", ymlName);
+                String config = StrUtil.format("classpath:config/redis-{}.setting", ymlName);
                 if (FileUtil.isFile(config)) {
                     Setting setting = new Setting(config);
                     redisDS = RedisDS.create(setting, null);
