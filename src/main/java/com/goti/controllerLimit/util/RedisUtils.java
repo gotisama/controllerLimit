@@ -45,9 +45,9 @@ public class RedisUtils {
                 String config = StrUtil.format("config/redis-{}.setting", ymlName);
                 log.info("redis配置文件路径：{}", config);
                 ClassPathResource resource = new ClassPathResource(config);
-                if (resource.getFile().exists()) {
+                if (ObjectUtil.isNotEmpty(resource)) {
                     log.info("使用了 {}", config);
-                    Setting setting = new Setting(resource.getFile(), Charset.defaultCharset(),false);
+                    Setting setting = new Setting(resource, Charset.defaultCharset(),false);
                     redisDS = RedisDS.create(setting, null);
                 } else {
                     log.info("未使用自定义配置文件: {}",config);
