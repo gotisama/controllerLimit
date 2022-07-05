@@ -1,6 +1,7 @@
 package com.goti.controllerLimit.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.io.resource.NoResourceException;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.CharsetUtil;
@@ -40,11 +41,11 @@ public class RedisUtils {
         if (redisDS == null) {
             String ymlName = SpringUtil.getActiveProfile();
             try {
-
             if (ObjectUtil.isNotEmpty(ymlName)) {
                 String config = StrUtil.format("config/redis-{}.setting", ymlName);
-                Resource resource = new DefaultResourceLoader().getResource(config);
-                if (resource.exists()) {
+                log.info("redis配置文件路径：{}", config);
+                ClassPathResource resource = new ClassPathResource(config);
+                if (resource.getFile().exists()) {
                     log.info("使用了 {}", config);
                     Setting setting = new Setting(resource.getFile(), Charset.defaultCharset(),false);
                     redisDS = RedisDS.create(setting, null);
