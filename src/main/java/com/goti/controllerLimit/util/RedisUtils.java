@@ -42,7 +42,7 @@ public class RedisUtils {
             try {
 
             if (ObjectUtil.isNotEmpty(ymlName)) {
-                String config = StrUtil.format("config.redis-{}.setting", ymlName);
+                String config = StrUtil.format("config/redis-{}.setting", ymlName);
                 Resource resource = new DefaultResourceLoader().getResource(config);
                 if (resource.exists()) {
                     log.info("使用了 {}", config);
