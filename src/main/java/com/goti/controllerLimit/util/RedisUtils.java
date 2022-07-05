@@ -1,7 +1,10 @@
 package com.goti.controllerLimit.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.io.resource.NoResourceException;
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.nosql.redis.RedisDS;
@@ -9,10 +12,13 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.log.Log;
 import cn.hutool.setting.Setting;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,22 +40,28 @@ public class RedisUtils {
     public static Jedis getJedis() {
         if (redisDS == null) {
             String ymlName = SpringUtil.getActiveProfile();
-            log.info("ActiveProfile : {}", ymlName);
+            try {
             if (ObjectUtil.isNotEmpty(ymlName)) {
-                String config = StrUtil.format("classpath:config/redis-{}.setting", ymlName);
-                if (FileUtil.isFile(config)) {
-                    Setting setting = new Setting(config);
-                    log.info("使用了: {}",config);
+                String config = StrUtil.format("config/redis-{}.setting", ymlName);
+                log.info("redis配置文件路径：{}", config);
+                ClassPathResource resource = new ClassPathResource(config);
+                if (ObjectUtil.isNotEmpty(resource)) {
+                    log.info("使用了 {}", config);
+                    Setting setting = new Setting(resource, Charset.defaultCharset(),false);
                     redisDS = RedisDS.create(setting, null);
                 } else {
-                    log.info("未使用: {}",config);
+                    log.info("未使用自定义配置文件: {}",config);
                     redisDS = RedisDS.create();
                 }
             } else {
+                log.info("未使用自定义配置文件");
+                redisDS = RedisDS.create();
+            }
+            }catch (Exception e){
+                log.error("redis配置文件读取失败，使用默认配置");
                 redisDS = RedisDS.create();
             }
         }
-
         return redisDS.getJedis();
     }
 
